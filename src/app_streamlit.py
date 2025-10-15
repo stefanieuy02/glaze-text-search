@@ -6,16 +6,16 @@ import streamlit as st
 from openai import OpenAI
 from dotenv import load_dotenv
 
-# --- Streamlit page setup ---
-st.set_page_config(page_title="🎨 Glaze Search", layout="wide")
-st.title("🎨 Glaze Search Engine")
-st.caption("Find pottery glazes that match your description — visually and by recipe.")
+# streamlit page setup
+st.set_page_config(page_title="Glaze Search", layout="wide")
+st.title("Glaze Search Engine")
+st.caption("Find pottery glazes that match your description")
 
-# --- Load environment variables + API client ---
+# env vars + openai api
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# --- Load unified index ---
+#unified index
 @st.cache_data
 def load_index():
     df = pd.read_csv("data/processed/glaze_master_index.csv")
@@ -25,9 +25,9 @@ def load_index():
     return df
 
 df = load_index()
-st.success(f"✅ Loaded {len(df)} glaze entries with captions, recipes, and embeddings.")
+st.success(f"Loaded {len(df)} glaze entries with captions, recipes, and embeddings.")
 
-# --- Helper functions ---
+#helper funcs
 def embed_text(query: str):
     """Generate a text embedding for the search query."""
     response = client.embeddings.create(
@@ -41,9 +41,9 @@ def cosine_similarity(a, b):
     a, b = np.array(a), np.array(b)
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
-# --- Sidebar information ---
+#streamlit sidebar info
 with st.sidebar:
-    st.header("🔧 About this App")
+    st.header("About this App")
     st.write("""
     This prototype uses OpenAI embeddings and CLIP image features to match text queries to real glaze photos.  
     Each result shows:
@@ -51,15 +51,15 @@ with st.sidebar:
     - The actual **glaze recipe**
     - A **similarity score**
     """)
-    st.write("Built by Stefanie 💫")
+    st.write("Built by Stef! 💖")
 
-# --- Main search box ---
+#search box
 query = st.text_input(
     "Describe the glaze you're looking for:",
     placeholder="e.g. 'matte white with brown speckles'",
 )
 
-# --- Perform search ---
+#perform search
 if query:
     with st.spinner("Searching for matching glazes..."):
         query_vec = embed_text(query)
