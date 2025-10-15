@@ -1,3 +1,8 @@
 # Ignore data folders (too big for GitHub)
 data/raw/images/
 data/processed/
+# Ignore Python virtual environment lol
+glaze-env/ 
+venv/
+#ignore api key
+.env
