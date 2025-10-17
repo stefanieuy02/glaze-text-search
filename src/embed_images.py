@@ -21,7 +21,7 @@ for fname in tqdm(os.listdir(input_dir)):
         inputs = processor(images=img, return_tensors="pt")
         with torch.no_grad():
             emb = model.get_image_features(**inputs).squeeze().tolist()
-        results.append({"filename": fname, "embedding": emb})
+        results.append({"filename": fname, "embedding_img": emb})
 
 pd.DataFrame(results).to_csv(output_path, index=False)
 print(f"Saved image embeddings to {output_path}")
