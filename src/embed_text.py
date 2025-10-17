@@ -23,7 +23,8 @@ for desc in tqdm(df["description"], desc="Embedding glaze descriptions"):
     )
     embeddings.append(response.data[0].embedding)
 
-df["embedding"] = embeddings
+df["embedding_text"] = embeddings
+df.rename(columns={'description': 'glaze_description'}, inplace=True)
 
 #save output!
 output_path = "data/processed/glaze_text_embeddings.csv"
